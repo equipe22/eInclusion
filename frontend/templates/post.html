@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+<h1>{% block title %} Einclusion {% endblock %}</h1>
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">patient redcap id </th>
+            <th scope="col">IPP/NIP </th>
+            <th scope="col">firstname </th>
+            <th scope="col">lastname</th>
+            <th scope="col">date of birth</th>
+            <th scope="col">source</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post['patient_id'] }}</td>
+            <td>{{ post['nip'] }}</td>
+            <td>{{ post['firstname'] }}</td>
+            <td>{{ post['lastname'] }}</td>
+            <td>{{ post['dob'] }}</td>
+            <td>{{ post['sourcesystem'] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form action="/addpatienttostudy/" method="post">
+    <button name="addpatientBtn" type="submit">Add patient</button>
+    </form>
+    {{ forward_message }}
+
+
+{% endblock %}

@@ -1,0 +1,10 @@
+//sur windows
+set FLASK_APP=hello
+set FLASK_ENV=development
+flask run --host=10.149.219.161
+
+//sur ubuntu
+export FLASK_APP=hello
+export FLASK_ENV=development
+export FLASK_APP=app
+flask run --host=10.149.219.161
