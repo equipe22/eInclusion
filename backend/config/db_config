@@ -1,0 +1,5 @@
+DB_host=localhost
+DB_name=einclusion
+DB_port=5433
+DB_user=postgres
+DB_password=postgres

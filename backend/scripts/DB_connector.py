@@ -86,6 +86,18 @@ class DB_Einclusion:
         cursor.close()
         return res
 
+    def find_last_record_id(self, study_id):
+        cursor = self.connect()
+        request = 'select MAX(ps.record_identifier) from patient p, patientStudy ps '
+        request += 'where study_id = \'' + study_id + '\' '
+        request += 'and length(ps.record_identifier) = (select MAX(length(ps.record_identifier)) from patientStudy ps where study_id = \''+study_id+'\')'
+        cursor.execute(request.encode('utf-8'))
+        for row in cursor:
+            for data in row:
+                return data[0]
+        cursor.close()
+        return ''
+
     def update_patient(self,id_patient, varname, value):
         cursor = self.connect()
         request = 'update patient set ' + varname + ' = \'' + value + '\' where patient_id = ' + id_patient
@@ -183,7 +195,7 @@ class DB_Einclusion:
 
     def check_link_user_study(self, user_id, study_id):
         cursor = self.connect()
-        request = 'select * from userstudy where user_id = '+str(user_id)+' and study_id = '+str(study_id)
+        request = 'select * from userstudy where user_id = "'+str(user_id)+'" and study_id = '+str(study_id)
         cursor.execute(request.encode('utf-8'))
         for row in cursor:
             cursor.close()
@@ -211,5 +223,14 @@ class DB_Einclusion:
     def search_user(self, user_name):
         result = 0
         cursor = self.connect()
+        request = 'select user_id from userapp'
+        cursor.execute(request.encode('utf-8'))
+
+    def send_last_userid(self):
+        result = 0
+        cursor = self.connect()
         request = 'select MAX(user_id) from userapp'
         cursor.execute(request.encode('utf-8'))
+        for row in cursor:
+            result = row
+        return result

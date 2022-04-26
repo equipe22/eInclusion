@@ -13,7 +13,31 @@ def index():
     research = einclusion.search_patient(body=body)
     print(research)
     return render_template('index.html', posts=research)
+'''
+@app.route('/ipp/<string:post_id>')
+def post(post_id):
+    post = {}
+    einclusion = interaction_einclusion()
+    body = body_modele(ipp=str(post_id))
+    res = einclusion.search_patient_id(body)
+    print(res)
+    try:
+        post['title'] = 'find patient'
+        post['firstname'] = res[0]
+        post['lastname'] = res[1]
+        post['date_of_birth'] = res[2]
+        post['nip'] = res[3]
+        return post['nip']
+        #return render_template('post.html', post=post)
 
+    except:
+        post['title'] = 'find patient'
+        post['firstname'] = ''
+        post['lastname'] = ''
+        post['date_of_birth'] = ''
+        return ''
+        #return render_template('post.html', post=post)
+'''
 @app.route('/ipp/<string:record_id>/<string:study_id>')
 def post(record_id, study_id):
     post = {}
@@ -68,21 +92,6 @@ def lastname(record_id, study_id):
         post['title'] = 'find patient'
         post['lastname'] = res[1]
         return post['lastname']
-
-    except:
-        post['title'] = 'find patient'
-        return ''
-
-@app.route('/trigramme/<string:record_id>/<string:study_id>')
-def trigramme(record_id, study_id):
-    post = {}
-    einclusion = interaction_einclusion()
-    body = body_modele(record_id=str(record_id), study_id=str(study_id))
-    res = einclusion.search_patient_id(body)
-    try:
-        post['title'] = 'find patient'
-        post['lastname'] = res[1]
-        return str(post['firstname'][0] + post['lastname'][0] + post['lastname'][-1]).upper()
 
     except:
         post['title'] = 'find patient'

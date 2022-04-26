@@ -39,7 +39,6 @@ def index():
     return render_template('index.html', posts=informations)
     #return dataset
 
-
 @app.route("/export/", methods=['POST'])
 def export_csv():
     #Moving forward code

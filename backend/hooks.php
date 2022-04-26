@@ -6,15 +6,17 @@
  */
 //error_reporting(E_ALL);
 
+include 'eInclusion_parameters.php';
+
 require_once '/var/www/html/redcap_connect.php'; # for Plugin; adjust path as needed
 $user_id = USERID;
 
 function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
 	//1 recherche des differentes variables dans Einclusion
-	$nip = file_get_contents('http://10.149.219.161:5000/ipp/'.$record.'/'.$project_id);
-	$firstname = file_get_contents('http://10.149.219.161:5000/firstname/'.$record.'/'.$project_id);
-	$lastname = file_get_contents('http://10.149.219.161:5000/lastname/'.$record.'/'.$project_id);
-	$dateofbirth = file_get_contents('http://10.149.219.161:5000/dateofbirth/'.$record.'/'.$project_id);
+	$nip = file_get_contents($eInclusion_backend_ip.'/ipp/'.$record.'/'.$project_id);
+	$firstname = file_get_contents($eInclusion_backend_ip.'/firstname/'.$record.'/'.$project_id);
+	$lastname = file_get_contents($eInclusion_backend_ip.'/lastname/'.$record.'/'.$project_id);
+	$dateofbirth = file_get_contents($eInclusion_backend_ip.'/dateofbirth/'.$record.'/'.$project_id);
 	//on peut directement envoyer via php le user_id et le project_id
 	$data_instrument = $instrument;
 	//2 transmission a redcap
@@ -93,6 +95,10 @@ function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $g
 	tr4.appendChild(td_data4);
 	re.after(tr4);
 
+	// 5 recuperation du record_id
+	re = document.getElementById("record_id-tr");
+	var record_id = re.value
+
 	// save data
 	var timeoutId;
     $(\'#NIP-hook\').on(\'input propertychange change\', function() {
@@ -109,7 +115,7 @@ function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $g
     {
     console.log(\'Saving to the DB \'+document.getElementById("NIP-hook").value);
 	$.ajax({
-		url: "http://10.149.219.161:5000/identification/nip/",
+		url: $eInclusion_backend_ip."/identification/nip/",
 		type: "POST",
 		//data: document.getElementById("NIP-hook").serialize(), // serializes the form\'s elements.
 		data: {ipp : $(\'#NIP-hook\').val(), record : "'.$record.'", user : "'.USERID.'", project : "'.$project_id.'", lastname : $(\'#lastname-hook\').val(), firstname : $(\'#firstname-hook\').val(), date_of_birth : $(\'#dateofbirth-hook\').val(), source : "redcap" },
