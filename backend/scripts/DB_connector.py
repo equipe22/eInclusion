@@ -61,7 +61,7 @@ class DB_Einclusion:
     def find_patient_by_ipp(self, ipp):
         res = []
         cursor = self.connect()
-        request = 'select patient_id, firstname, lastname, date_of_birth  from patient where ipp = \'' + ipp + '\''
+        request = 'select patient_id, firstname, lastname, date_of_birth from patient where ipp = \'' + ipp + '\''
         cursor.execute(request.encode('utf-8'))
         for row in cursor:
             tuple_resp = []
@@ -189,13 +189,13 @@ class DB_Einclusion:
     def insert_user(self, user_id, user_name):
         cursor = self.connect()
         request = 'insert into userapp (user_id, user_name) values '
-        request += '(' +user_id + ', "'+user_name+'") ON CONFLICT (user_id) DO NOTHING'
+        request += '(' +user_id + ', \''+user_name+'\') ON CONFLICT (user_id) DO NOTHING'
         cursor.execute(request.encode('utf-8'))
         cursor.close()
 
     def check_link_user_study(self, user_id, study_id):
         cursor = self.connect()
-        request = 'select * from userstudy where user_id = "'+str(user_id)+'" and study_id = '+str(study_id)
+        request = 'select * from userstudy where user_id = \''+str(user_id)+'\' and study_id = '+str(study_id)
         cursor.execute(request.encode('utf-8'))
         for row in cursor:
             cursor.close()
@@ -207,7 +207,7 @@ class DB_Einclusion:
     def insert_user_study_link (self, user_id, study_id):
         cursor = self.connect()
         request = 'insert into userstudy (user_id, study_id) values '
-        request += '(' + user_id + ', ' + study_id + ') '
+        request += '(\'' + user_id + '\', ' + study_id + ') '
         cursor.execute(request.encode('utf-8'))
         cursor.close()
 

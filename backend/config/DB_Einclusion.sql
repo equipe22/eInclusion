@@ -1,3 +1,6 @@
+DROP DATABASE IF EXISTS  einclusion;
+CREATE DATABASE einclusion;
+
 CREATE TABLE "patient" (
   "patient_id" SERIAL PRIMARY KEY,
   "ipp" varchar(20),
@@ -45,44 +48,25 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "user_aliases" (
-  "user_id" int,
+  "user_id" varchar,
   "user_alias" varchar
 );
 
 CREATE TABLE "userprovider" (
-  "user_id" int,
+  "user_id" varchar,
   "provider_id" int
 );
 
 CREATE TABLE "userstudy" (
-  "user_id" int,
+  "user_id" varchar,
   "study_id" int
 );
 
 ALTER TABLE "userprovider" ADD PRIMARY KEY ("user_id", "provider_id");
 
 CREATE TABLE "log" (
-  "user_id" int,
+  "user_id" varchar,
   "action" int,
   "patient_id" int,
   "timestamp" timestamp
 );
-
-ALTER TABLE "study" ADD FOREIGN KEY ("studysource_id") REFERENCES "studysource" ("studysource_id");
-
-ALTER TABLE "patientstudy" ADD FOREIGN KEY ("patient_id") REFERENCES "patient" ("patient_id");
-
-ALTER TABLE "patientstudy" ADD FOREIGN KEY ("study_id") REFERENCES "study" ("study_id");
-
-ALTER TABLE "patientprovider" ADD FOREIGN KEY ("patient_id") REFERENCES "patient" ("patient_id");
-
-ALTER TABLE "patientprovider" ADD FOREIGN KEY ("provider_id") REFERENCES "provider" ("provider_id");
-
-ALTER TABLE "user_aliases" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("user_id");
-
-ALTER TABLE "userprovider" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("user_id");
-
-ALTER TABLE "userprovider" ADD FOREIGN KEY ("provider_id") REFERENCES "provider" ("provider_id");
-
-
-

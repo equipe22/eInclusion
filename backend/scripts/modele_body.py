@@ -15,7 +15,8 @@ class body_modele:
         self.study_name = study_name
         self.study_id = study_id
         self.source = source
-        self.record_id = record_id
+        self.record_id = record_id.split('<')[0]
+        #print('le record id est : "'+ str(self.record_id)+'"')
         self.datebirth = datebirth
         self.user_id = user_id
 

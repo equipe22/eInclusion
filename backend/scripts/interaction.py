@@ -51,34 +51,37 @@ class interaction_einclusion:
 
     def call_add_patient_ipp(self, body):
         #check if user exist and create if not exist
-        id_user = '0'
+        #id_user = '0'
+        if body.record_id != '':
+            if body.user_id == None :
+                body.user_id = 0
+            id_user = self.connector_einclusion.search_user(body.user_id)
+            if id_user == '':
+                id_user = self.connector_einclusion.search_last_user()
+                self.connector_einclusion.insert_user(id_user, body.user_id)
 
-        if body.user_id == None :
-            body.user_id = 0
-        id_user = self.connector_einclusion.search_user(body.user_id)
-        if id_user == '':
-            id_user = self.connector_einclusion.search_last_user()
-            self.connector_einclusion.insert_user(id_user, body.user_id)
+            ###############################################
+            #check if study exist
+            check_study = self.connector_einclusion.check_study(body.study_id)
+            if not check_study:
+                self.redcap_add_study(body.study_id, body.study_name)
+            #link study to user
+            if not self.connector_einclusion.check_link_user_study(body.user_id, body.study_id):
+                self.connector_einclusion.insert_user_study_link(body.user_id, body.study_id)
+            ###############################################
 
-        ###############################################
-        #check if study exist
-        check_study = self.connector_einclusion.check_study(body.study_id)
-        if not check_study:
-            self.redcap_add_study(body.study_id, body.study_name)
-        #link study to user
-        if not self.connector_einclusion.check_link_user_study(body.id_user, body.study_id):
-            self.connector_einclusion.insert_user_study_link(body.id_user, body.study_id)
-        ###############################################
+            info_patient = self.connector_einclusion.find_patient_by_record_id(body.record_id, body.study_id)
+            #si le record_id n'est pas present mais que les autres variable definissant le patient sont presentes : se servir de l'incrementation pour deviner le record_id
+            #if body.record_id == '':
+            #    body.record_id = self.connector_einclusion.find_last_record_id(body.study_id)
+            #    if body.record_id != '':
+            #        body.record_id = str(int(body.record_id)+1)
+            if info_patient == []:
+                self.redcap_add_patient(body.ipp, body.firstname, body.lastname, body.datebirth, body.study_id, body.user_id, body.record_id)
+            else: self.redcap_update_patient(info_patient, body)
 
-        info_patient = self.connector_einclusion.find_patient_by_record_id(body.record_id, body.study_id)
-        #si le record_id n'est pas present mais que les autres variable definissant le patient sont presentes : se servir de l'incrementation pour deviner le record_id
-        if body.record_id == '':
-            body.record_id = self.connector_einclusion.find_last_record_id(body.study_id)
-            if body.record_id != '':
-                body.record_id = str(int(body.record_id)+1)
-        if info_patient == []:
-            self.redcap_add_patient(body.ipp, body.firstname, body.lastname, body.datebirth, body.study_id, body.user_id, body.record_id)
-        else: self.redcap_update_patient(info_patient, body)
+        else :
+            print('ERROR : no record_id found')
 
     def list_Einclusion_in_list_study(self):
         data = self.connector_einclusion.search_list_study()
