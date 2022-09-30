@@ -1,0 +1,20 @@
+# ignore file
+frontend/script/data_test.sql
+frontend/__pycache__
+backend/.idea
+backend/__pycache__
+backend/config/bd_config
+backend/config/server
+backend/complementary_script
+backend/script/transfert_to_redcap.py
+backend/script/data_test.sql
+backend/script/__pycache__
+backend/venv
+backend/readme
+backend/commande.txt
+backend/einclusion_parameters.php
+backend/hook.php
+backend/hello.py
+backend/hook_example.php
+backend/test.txt
+backend/tes_backend_connexion.py

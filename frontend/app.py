@@ -99,10 +99,10 @@ def studypage(study_id):
     with urlopen('http://'+ipp_server_port+'/info_study/'+study_id) as r:
         dataset = r.read()
     # 1 traitement sur les donnees recu
-    print(dataset)
+    #print(dataset)
     informations = []
     for data in dataset.decode('utf-8').replace('[', '').replace(']', '').split('), ('):
-        print(data)
+        #print(data)
         result = {}
         result['patient_id'] = data.replace('(', '').replace(')', '').split(', ')[0].replace('\'', '')
         result['nip'] = data.replace('(', '').replace(')', '').split(', ')[1].replace('\'', '')
@@ -125,10 +125,10 @@ def userinfo(user_id):
     with urlopen('http://'+ipp_server_port+'/info_study/'+user_id) as r:
         dataset = r.read()
     # 1 traitement sur les donnees recu
-    print(dataset)
+    #print(dataset)
     informations = []
     for data in dataset.decode('utf-8').replace('[', '').replace(']', '').split('), ('):
-        print(data)
+        #print(data)
         result = {}
         result['patient_id'] = data.replace('(', '').replace(')', '').split(', ')[0].replace('\'', '')
         result['nip'] = data.replace('(', '').replace(')', '').split(', ')[1].replace('\'', '')

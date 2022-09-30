@@ -10,16 +10,19 @@ require_once '/var/www/html/redcap_connect.php'; # for Plugin; adjust path as ne
 $user_id = USERID;
 
 function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
+    $ip_address_port = 'http://10.149.219.161:5000';
+
 	//1 recherche des differentes variables dans Einclusion
-	$nip = file_get_contents('http://10.149.219.161:5000/ipp/'.$record.'/'.$project_id);
-	$firstname = file_get_contents('http://10.149.219.161:5000/firstname/'.$record.'/'.$project_id);
-	$lastname = file_get_contents('http://10.149.219.161:5000/lastname/'.$record.'/'.$project_id);
-	$dateofbirth = file_get_contents('http://10.149.219.161:5000/dateofbirth/'.$record.'/'.$project_id);
+	$nip = file_get_contents($ip_address_port.'/ipp/'.$record.'/'.$project_id);
+	$firstname = file_get_contents($ip_address_port.'/firstname/'.$record.'/'.$project_id);
+	$lastname = file_get_contents($ip_address_port.'/lastname/'.$record.'/'.$project_id);
+	$dateofbirth = file_get_contents($ip_address_port.'/dateofbirth/'.$record.'/'.$project_id);
 	//on peut directement envoyer via php le user_id et le project_id
 	$data_instrument = $instrument;
 	//2 transmission a redcap
     print '<script type="text/javascript">
 	re = document.getElementById("record_id-tr");
+
 	// ajout des lignes identifiantes
 	// 1 le NIP
 	var tr = document.createElement("tr");
@@ -116,7 +119,7 @@ function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $g
     record_id = String(document.getElementById("record_id-tr").getElementsByClassName("data col-5")[0].innerHTML);
     //console.log("record_id:"+record_id)
 	$.ajax({
-		url: "http://10.149.219.161:5000/identification/nip/",
+		url: "'.$ip_address_port.'/identification/nip/",
 		type: "POST",
 		//data: document.getElementById("NIP-hook").serialize(), // serializes the form\'s elements.
 		data: {ipp : $(\'#NIP-hook\').val(), record : record_id, user : "'.USERID.'", project : "'.$project_id.'", lastname : $(\'#lastname-hook\').val(), firstname : $(\'#firstname-hook\').val(), date_of_birth : $(\'#dateofbirth-hook\').val(), source : "redcap" },

@@ -8,7 +8,6 @@
 
 require_once '/var/www/html/redcap_connect.php'; # for Plugin; adjust path as needed
 $user_id = USERID;
-$ip_address_port = 'http://10.149.219.161:5000';
 
 function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
     $ip_address_port = 'http://10.149.219.161:5000';
@@ -23,6 +22,7 @@ function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $g
 	//2 transmission a redcap
     print '<script type="text/javascript">
 	re = document.getElementById("record_id-tr");
+
 	// ajout des lignes identifiantes
 	// 1 le NIP
 	var tr = document.createElement("tr");
